@@ -56,6 +56,23 @@ module.exports = {
       });
     });
   },
+  'adding an object to a manyThrough relation should create a matching object of the pass-thru type': function (assert, done) {
+    mongoose.User.create({uname: 'jt'}, function (err, user) {
+      if (err) throw err;
+      mongoose.Tweet.create({status: '@jt'}, function (err, tweet) {
+        user.favorites.add(tweet, function (err) {
+          mongoose.Favorite.first({
+            user: new DBRef(user._schema._collection, user._id),
+            tweet: new DBRef(tweet._schema._collection, tweet._id)
+          }, function (err, found) {
+            assert.equal(err, null);
+            assert.equal(found instanceof mongoose.Favorite, true);
+            done();
+          });
+        });
+      });
+    });
+  },
 //  'a manyThrough relation should determine quickly whether it references one or more objects with aset of attributes': function (assert, done) {
 //    // TODO
 //  },
