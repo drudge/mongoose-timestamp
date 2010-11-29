@@ -1,1 +1,1 @@
-module.exports = require("./lib/types");
+module.exports = require("./lib");
