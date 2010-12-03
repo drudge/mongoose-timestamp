@@ -6,6 +6,7 @@ var assert = require('assert')
 
 loadTypes(mongoose, 'email');
 document('User')
+  .oid('_id')
   .email('email');
 
 module.exports = {
@@ -31,6 +32,15 @@ module.exports = {
       assert.equal("undefined", typeof user.errors);
       assert.equal(false, user.isNew);
       done();
+    });
+  },
+  'email should be converted to lowercase': function (assert, done) {
+    mongoose.User.create({ email: 'mIxEdCaSe@lowercase.com'}, function (err, user) {
+      assert.equal(user.email, 'mixedcase@lowercase.com');
+      mongoose.User.findById(user.id, function (err, refreshed) {
+        assert.equal(refreshed.email, 'mixedcase@lowercase.com');
+        done();
+      });
     });
   },
   teardown: function(){
