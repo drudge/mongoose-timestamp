@@ -1,0 +1,11 @@
+{ "name": "mongoose-types"
+, "description":  "More types for mongoose"
+, "version":  "0.0.1"
+, "author": "Brian Noguchi"
+, "dependencies": { "mongoose": "1.0.0"}
+, "keywords": [ "mongoose", "mongo", "mongodb", "types" ]
+, "scripts": { "test": "make test" }
+, "engines": { "node": ">= 0.1.101" }
+, "main": "./index"
+, "licenses": [ { "type": "The MIT License", "url": "http://www.opensource.org/licenses/mit-license.php" } ]
+}
