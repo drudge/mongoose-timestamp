@@ -2,7 +2,6 @@ require('should');
 var mongoose = require('mongoose')
   , Schema = mongoose.Schema
   , db = mongoose.createConnection('mongodb://localhost/mongoose_types_tests')
-  , loadTypes = require("../").loadTypes
   , useTimestamps = require("../").useTimestamps;
 
 mongoose.plugin(useTimestamps);
@@ -22,7 +21,8 @@ module.exports = {
     });
   },
   'createdAt and updatedAt should be set to the same value on creation': function (done) {
-    TimeCop.create({ email: 'brian@brian.com' }, function (err, cop) {
+    var cop = new TimeCop({ email: 'brian@brian.com' });
+    cop.save( function (err) {
       cop.createdAt.should.be.an.instanceof(Date);
       cop.updatedAt.should.be.an.instanceof(Date);
       done();
@@ -33,6 +33,7 @@ module.exports = {
       found.email = 'jeanclaude@vandamme.com';
       setTimeout( function () {
         found.save( function (err, updated) {
+          updated.updatedAt.should.be.greater.than(updated.createdAt);
           assert.ok(updated.updatedAt > updated.createdAt);
           done();
         });

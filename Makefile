@@ -1,6 +1,6 @@
 EXPRESSO = support/expresso/bin/expresso -I lib --serial
 
-TESTS = tests/useTimestamps.test.js
+TESTS = tests/*.test.js
 
 test:
 	@$(EXPRESSO) $(TESTS) $(TEST_FLAGS)

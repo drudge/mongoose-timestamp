@@ -1,49 +1,50 @@
-var assert = require('assert')
-  , mongoose = require('mongoose').new()
-  , document = mongoose.define
-  , db = mongoose.connect('mongodb://localhost/mongoose_types_tests')
-  , loadTypes = require("../").loadTypes;
+require('should');
+var mongoose = require('mongoose')
+  , Schema = mongoose.Schema
+  , db = mongoose.createConnection('mongodb://localhost/mongoose_types_tests');
 
-loadTypes(mongoose, 'email');
-document('User')
-  .oid('_id')
-  .email('email');
+require("../").loadTypes(mongoose, 'email')
+
+var UserSchema = new Schema({
+  email: mongoose.SchemaTypes.Email
+});
+
+mongoose.model('User', UserSchema);
+var User;
 
 module.exports = {
-  before: function(assert, done){
-    db.on('connect', function () {
-      mongoose.User.remove({}, function () {
-        done();
-      });
-    });
-  },
-  'test invalid email validation': function (assert, done) {
-    var user = new mongoose.User({email: 'hello'});
-    user.save(function (err, _user) {
-      assert.ok(_user.errors[0].name === 'email');
-      assert.ok(_user.errors[0].path === 'email');
-      assert.ok(_user.errors[0].type === 'validation');
-      assert.ok(_user.errors[0].message === 'validation email failed for email');
+  before: function(done){
+    User = db.model('User', UserSchema);
+    User.remove({}, function (err) {
       done();
     });
   },
-  'test valid email validation': function (assert, done) {
-    mongoose.User.create({ email: 'brian@brian.com' }, function (err, user) {
-      assert.equal("undefined", typeof user.errors);
-      assert.equal(false, user.isNew);
+  'test invalid email validation': function (done) {
+    var user = new User({email: 'hello'});
+    user.save(function (err) {
+      err.should.equal('email is invalid');
       done();
     });
   },
-  'email should be converted to lowercase': function (assert, done) {
-    mongoose.User.create({ email: 'mIxEdCaSe@lowercase.com'}, function (err, user) {
+  'test valid email validation': function (done) {
+    var user = new User({ email: 'brian@brian.com' });
+    user.save(function (err) {
+      err.should.eql(null);
+      user.isNew.should.be.false;
+      done();
+    });
+  },
+  'email should be converted to lowercase': function (done) {
+    var user = new User({ email: 'mIxEdCaSe@lowercase.com'});
+    user.save(function (err) {
       assert.equal(user.email, 'mixedcase@lowercase.com');
-      mongoose.User.findById(user.id, function (err, refreshed) {
+      User.findById(user._id, function (err, refreshed) {
         assert.equal(refreshed.email, 'mixedcase@lowercase.com');
         done();
       });
     });
   },
   teardown: function(){
-    mongoose.disconnect();
+    db.close();
   }
 };
