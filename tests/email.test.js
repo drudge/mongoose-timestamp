@@ -3,7 +3,7 @@ var mongoose = require('mongoose')
   , Schema = mongoose.Schema
   , db = mongoose.createConnection('mongodb://localhost/mongoose_types_tests');
 
-require("../").loadTypes(mongoose, 'email')
+require("../").loadTypes(mongoose, 'email');
 
 var UserSchema = new Schema({
   email: mongoose.SchemaTypes.Email
@@ -23,6 +23,7 @@ module.exports = {
     var user = new User({email: 'hello'});
     user.save(function (err) {
       err.should.equal('email is invalid');
+      user.isNew.should.be.true;
       done();
     });
   },
@@ -37,9 +38,9 @@ module.exports = {
   'email should be converted to lowercase': function (done) {
     var user = new User({ email: 'mIxEdCaSe@lowercase.com'});
     user.save(function (err) {
-      assert.equal(user.email, 'mixedcase@lowercase.com');
+      user.email.should.equal('mixedcase@lowercase.com');
       User.findById(user._id, function (err, refreshed) {
-        assert.equal(refreshed.email, 'mixedcase@lowercase.com');
+        refreshed.email.should.equal('mixedcase@lowercase.com');
         done();
       });
     });
