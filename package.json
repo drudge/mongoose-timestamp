@@ -1,6 +1,6 @@
 { "name": "mongoose-types"
 , "description":  "More types for mongoose"
-, "version":  "0.0.2"
+, "version":  "1.0.0"
 , "author": "Brian Noguchi"
 , "dependencies": { "mongoose": "1.0.0"}
 , "keywords": [ "mongoose", "mongo", "mongodb", "types" ]
