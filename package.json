@@ -1,8 +1,8 @@
 { "name": "mongoose-types"
 , "description":  "More types for mongoose"
-, "version":  "1.0.1"
+, "version":  "1.0.2"
 , "author": "Brian Noguchi"
-, "dependencies": { "mongoose": ">= 1.0.0"}
+, "dependencies": { "mongoose": ">= 1.0.13"}
 , "keywords": [ "mongoose", "mongo", "mongodb", "types" ]
 , "scripts": { "test": "make test" }
 , "engines": { "node": ">= 0.1.101" }
