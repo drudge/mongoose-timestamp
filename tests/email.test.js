@@ -13,35 +13,30 @@ mongoose.model('User', UserSchema);
 var User;
 
 module.exports = {
-  before: function(done){
+  before: function(){
     User = db.model('User', UserSchema);
-    User.remove({}, function (err) {
-      done();
-    });
+    User.remove({}, function (err) {});
   },
-  'test invalid email validation': function (done) {
+  'test invalid email validation': function () {
     var user = new User({email: 'hello'});
     user.save(function (err) {
-      err.should.equal('email is invalid');
+      err.message.should.equal('Validator "email is invalid" failed for path email');
       user.isNew.should.be.true;
-      done();
     });
   },
-  'test valid email validation': function (done) {
+  'test valid email validation': function () {
     var user = new User({ email: 'brian@brian.com' });
     user.save(function (err) {
       err.should.eql(null);
       user.isNew.should.be.false;
-      done();
     });
   },
-  'email should be converted to lowercase': function (done) {
+  'email should be converted to lowercase': function () {
     var user = new User({ email: 'mIxEdCaSe@lowercase.com'});
     user.save(function (err) {
       user.email.should.equal('mixedcase@lowercase.com');
       User.findById(user._id, function (err, refreshed) {
         refreshed.email.should.equal('mixedcase@lowercase.com');
-        done();
       });
     });
   },

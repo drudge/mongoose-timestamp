@@ -13,46 +13,39 @@ mongoose.model('Webpage', WebpageSchema);
 var Webpage;
 
 module.exports = {
-  before: function(done){
+  before: function(){
     Webpage = db.model('Webpage', WebpageSchema);
-    Webpage.remove({}, function (err) {
-      done();
-    });
+    Webpage.remove({}, function (err) {});
   },
-  'test invalid url validation': function (done) {
+  'test invalid url validation': function () {
     var webpage = new Webpage({url: 'file:///home/'});
     webpage.save(function (err) {
-      throw err;
-      err.should.equal('url is invalid');
+      err.message.should.equal('Validator "url is invalid" failed for path url');
       webpage.isNew.should.be.true;
-      done();
     });
   },
-  'test valid url validation': function (done) {
+  'test valid url validation': function () {
     var webpage = new Webpage({ url: 'http://www.google.com/' });
     webpage.save(function (err) {
       err.should.eql(null);
       webpage.isNew.should.be.false;
-      done();
     });
   },
-  'url normalization should remove www.': function (done) {
+  'url normalization should remove www.': function () {
     var webpage = new Webpage({ url: 'http://www.google.com/'});
     webpage.save(function (err) {
       webpage.url.should.equal('http://google.com/');
       Webpage.findById(webpage._id, function (err, refreshed) {
         refreshed.url.should.equal('http://google.com/');
-        done();
       });
     });
   },
-  'url normalization should add a trailing slash': function (done) {
+  'url normalization should add a trailing slash': function () {
     var webpage = new Webpage({ url: 'http://google.com'});
     webpage.save(function (err) {
       webpage.url.should.equal('http://google.com/');
       Webpage.findById(webpage._id, function (err, refreshed) {
         refreshed.url.should.equal('http://google.com/');
-        done();
       });
     });
   },
