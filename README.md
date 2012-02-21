@@ -2,10 +2,12 @@ mongoose-types - Useful types and type plugins for Mongoose
 ==============
 
 ### Types include:
+
 - Email
 - Url
 
 ### Plugins include:
+
 - useTimestamps
   Adds `createdAt` and `updatedAt` date attributes that get auto-assigned to the most recent create/update timestamp.
 
@@ -13,13 +15,16 @@ mongoose-types - Useful types and type plugins for Mongoose
     npm install mongoose-types
 
 ### Setup
+
 To include all of the defined types:
+
     var mongoose = require("mongoose");
     var db = mongoose.createConnection("mongodb://localhost/sampledb");
     var mongooseTypes = require("mongoose-types");
     mongooseTypes.loadTypes(mongoose);
 
 You can also specify that you only want to load and use a limited subset of the types provided:
+
     var mongoose = require("mongoose");
     var db = mongoose.createConnection("mongodb://localhost/sampledb");
     var mongooseTypes = require("mongoose-types");
@@ -27,9 +32,11 @@ You can also specify that you only want to load and use a limited subset of the 
     mongooseTypes.loadTypes(mongoose, "email");
 
 ### Using the types
+
 Once you are setup, you can begin to use the new types.
 
 #### Email
+
     var Email = mongoose.SchemaTypes.Email;
     var UserSchema = new Schema({
       email: {
@@ -39,6 +46,7 @@ Once you are setup, you can begin to use the new types.
     });
 
 #### Url
+
     var Url = mongoose.SchemaTypes.Url;
     var VisitSchema = new Schema({
         url: Url
@@ -76,15 +84,20 @@ Once you are setup, you can begin to use the new types.
     });
 
 ## Tests
+
 To run tests:
+
     make test
 
 ### Contributors
+
 - [Brian Noguchi](https://github.com/bnoguchi)
 
 ### License
+
 MIT License
 
 ---
 ### Author
+
 Brian Noguchi
