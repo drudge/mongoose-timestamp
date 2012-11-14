@@ -6,12 +6,12 @@ that get auto-assigned to the most recent create/update timestamp.
 
 ## Installation
 
-`npm install mongoose-timestamps`
+`npm install mongoose-timestamp`
 
 ## Usage
 
 ```javascript
-var timestamps = require('mongoose-timestamps');
+var timestamps = require('mongoose-timestamp');
 var UserSchema = new Schema({
     username: String
 });
