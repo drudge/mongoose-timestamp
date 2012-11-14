@@ -1,4 +1,4 @@
-Mongoose Timestamps Plugin
+Mongoose Timestamps Plugin [![Build Status](https://secure.travis-ci.org/drudge/mongoose-timestamp.png?branch=master)](https://travis-ci.org/drudge/mongoose-timestamp)
 ==========================
 
 Simple plugin for [Mongoose](https://github.com/LearnBoost/mongoose) which adds `createdAt` and `updatedAt` date attributes 
