@@ -1,103 +1,65 @@
-mongoose-types - Useful types and type plugins for Mongoose
-==============
+Mongoose Timestamps Plugin
+==========================
 
-### Types include:
+Simple plugin for [Mongoose](https://github.com/LearnBoost/mongoose) which adds `createdAt` and `updatedAt` date attributes 
+that get auto-assigned to the most recent create/update timestamp.
 
-- Email
-- Url
+## Installation
 
-### Plugins include:
+`npm install mongoose-timestamps`
 
-- useTimestamps
-  Adds `createdAt` and `updatedAt` date attributes that get auto-assigned to the most recent create/update timestamp.
+## Usage
 
-### Installation
-    npm install mongoose-types
+```javascript
+var timestamps = require('mongoose-timestamps');
+var UserSchema = new Schema({
+    username: String
+});
+UserSchema.plugin(timestamps);
+mongoose.model('User', UserSchema);
+var User = mongoose.model('User', UserSchema)
+```
+The User model will now have `createdAt` and `updatedAt` properties, which get 
+automatically generated and updated when you save your document.
 
-### Setup
-
-To include all of the defined types:
-
-    var mongoose = require("mongoose");
-    var db = mongoose.createConnection("mongodb://localhost/sampledb");
-    var mongooseTypes = require("mongoose-types");
-    mongooseTypes.loadTypes(mongoose);
-
-You can also specify that you only want to load and use a limited subset of the types provided:
-
-    var mongoose = require("mongoose");
-    var db = mongoose.createConnection("mongodb://localhost/sampledb");
-    var mongooseTypes = require("mongoose-types");
-    // Only load the email type
-    mongooseTypes.loadTypes(mongoose, "email");
-
-### Using the types
-
-Once you are setup, you can begin to use the new types.
-
-#### Email
-
-    var Email = mongoose.SchemaTypes.Email;
-    var UserSchema = new Schema({
-      email: {
-          work: Email
-        , home: Email
-      }
+```javascript
+var user = new User({username: 'Prince'});
+user.save(function (err) {
+  console.log(user.createdAt); // Should be approximately now
+  console.log(user.createdAt === user.updatedAt); // true
+  // Wait 1 second and then update the user
+  setTimeout( function () {
+    user.username = 'Symbol';
+    user.save( function (err) {
+      console.log(user.updatedAt); // Should be approximately createdAt + 1 second
+      console.log(user.createdAt < user.updatedAt); // true
     });
+  }, 1000);
+});
+```
+## License 
 
-#### Url
+(The MIT License)
 
-    var Url = mongoose.SchemaTypes.Url;
-    var VisitSchema = new Schema({
-        url: Url
-      , referer: Url
-    });
+Copyright (c) 2012 Nicholas Penree &lt;nick@penree.com&gt;
 
-### Using the plugins
+Based on [mongoose-types](https://github.com/bnoguchi/mongoose-types): Copyright (c) 2012 [Brian Noguchi](https://github.com/bnoguchi)
 
-#### The `useTimestamps` plugin
+Permission is hereby granted, free of charge, to any person obtaining
+a copy of this software and associated documentation files (the
+'Software'), to deal in the Software without restriction, including
+without limitation the rights to use, copy, modify, merge, publish,
+distribute, sublicense, and/or sell copies of the Software, and to
+permit persons to whom the Software is furnished to do so, subject to
+the following conditions:
 
-    var mongoose = require("mongoose");
-    var db = mongoose.createConnection("mongodb://localhost/sampledb");
-    var mongooseTypes = require("mongoose-types")
-      , useTimestamps = mongooseTypes.useTimestamps;
-    var UserSchema = new Schema({
-        username: String
-    });
-    UserSchema.plugin(useTimestamps);
-    mongoose.model('User', UserSchema);
-    var User = db.model('User', UserSchema);
-    
-    var user = new User({username: 'Prince'});
-    user.save(function (err) {
-      console.log(user.createdAt); // Should be approximately now
-      console.log(user.createdAt === user.updatedAt); // true
+The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.
 
-      // Wait 1 second and then update the user
-      setTimeout( function () {
-        user.username = 'Symbol';
-        user.save( function (err) {
-          console.log(user.updatedAt); // Should be approximately createdAt + 1 second
-          console.log(user.createdAt < user.updatedAt); // true
-        });
-      }, 1000);
-    });
-
-## Tests
-
-To run tests:
-
-    make test
-
-### Contributors
-
-- [Brian Noguchi](https://github.com/bnoguchi)
-
-### License
-
-MIT License
-
----
-### Author
-
-Brian Noguchi
+THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
