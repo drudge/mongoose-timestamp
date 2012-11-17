@@ -19,6 +19,12 @@ function timestampsPlugin(schema, options) {
         var unixtime = BinaryParser.decodeInt(this._id.id.slice(0, 4), 32, true, true);
         return this._createdAt = new Date(unixtime * 1000);
       });
+    if (options && options.enableCreatedSet) {
+      schema.virtual('createdAt')
+        .set( function(date) {
+          this._createdAt = date;
+        });
+    }
     schema.pre('save', function (next) {
       if (this.isNew) {
         this.updatedAt = this.createdAt;

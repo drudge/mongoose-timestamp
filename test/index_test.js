@@ -15,10 +15,6 @@ mongoose.connection.on('error', function (err) {
   console.error('Make sure a mongoDB server is running and accessible by this application')
 });
 
-var TimeCopSchema = new Schema({
-  email: String
-});
-
 mongoose.plugin(timestamps);
 
 var TimeCopSchema = new Schema({
@@ -26,6 +22,14 @@ var TimeCopSchema = new Schema({
 });
 
 var TimeCop = mongoose.model('TimeCop', TimeCopSchema);
+
+var UserSchema = new Schema({
+  email: String
+});
+
+UserSchema.plugin(timestamps, { enableCreatedSet: true });
+
+var User = mongoose.model('User', UserSchema);
 
 after(function(done) {
   mongoose.connection.db.dropDatabase()
@@ -40,7 +44,7 @@ describe('timestamps', function() {
       done();
     });
   })
-  
+
   it('should have updatedAt greater than createdAt upon updating', function(done) {
     TimeCop.findOne({email: 'brian@brian.com'}, function (err, found) {
       found.email = 'jeanclaude@vandamme.com';
@@ -52,4 +56,19 @@ describe('timestamps', function() {
       }, 1000);
     });
   })
+
+  it('should have the option to create the set for the virtual method createdAt', function(done) {
+    var date = new Date;
+    setTimeout( function() {
+      var user = new User({ email: 'brian@brian.com.br', createdAt: date });
+      user.createdAt.should.be.equal(date);
+      setTimeout( function() {
+        var cop  = new TimeCop({ email: 'brian@brian.com.br', createdAt: date });
+        cop.save( function (err) {
+          cop.createdAt.should.be.above(date)
+          done();
+        });
+      }, 500);
+    }, 500);
+  });
 })
