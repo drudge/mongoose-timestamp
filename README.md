@@ -37,6 +37,16 @@ user.save(function (err) {
   }, 1000);
 });
 ```
+
+## Set createdAt
+
+In some cases it may be necessary to specify the date of creation. This may facilitate
+tests or load of fixtures. In these cases use the option enableCreatedSet:
+
+```javascript
+UserSchema.plugin(timestamps, { enableCreatedSet: true });
+```
+
 ## License 
 
 (The MIT License)
