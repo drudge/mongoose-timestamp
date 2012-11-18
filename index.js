@@ -16,8 +16,7 @@ function timestampsPlugin(schema, options) {
     schema.virtual('createdAt')
       .get( function () {
         if (this._createdAt) return this._createdAt;
-        var unixtime = BinaryParser.decodeInt(this._id.id.slice(0, 4), 32, true, true);
-        return this._createdAt = new Date(unixtime * 1000);
+        return this._createdAt = this._id.getTimestamp();
       });
     schema.pre('save', function (next) {
       if (this.isNew) {
