@@ -25,7 +25,8 @@ var TimeCopSchema = new Schema({
   email: String
 });
 
-var TimeCop = mongoose.model('TimeCop', TimeCopSchema);
+var TimeCop
+try {TimeCop = mongoose.model('TimeCop')} catch(e) {TimeCop = mongoose.model('TimeCop', TimeCopSchema)};
 
 after(function(done) {
   mongoose.connection.db.dropDatabase()

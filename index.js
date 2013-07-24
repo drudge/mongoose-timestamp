@@ -9,9 +9,12 @@ var mongoose = require('mongoose');
 var BinaryParser = require('mongoose/node_modules/mongodb/node_modules/bson').BinaryParser;
 
 function timestampsPlugin(schema, options) {
+  var timeOptions = options || {};
+  if (timeOptions.updatedElement) {timeOptions.updatedElement.type = Date} else {timeOptions.updatedElement = {type: Date}}
+  if (timeOptions.createdElement) {timeOptions.createdElement.type = Date} else {timeOptions.createdElement = {type: Date}}
   if (schema.path('_id')) {
     schema.add({
-      updatedAt: Date
+      updatedAt: timeOptions.updatedElement
     });
     schema.virtual('createdAt')
       .get( function () {
@@ -28,8 +31,8 @@ function timestampsPlugin(schema, options) {
     });
   } else {
     schema.add({
-        createdAt: Date
-      , updatedAt: Date
+        createdAt: timeOptions.createdElement
+      , updatedAt: timeOptions.updatedElement
     });
     schema.pre('save', function (next) {
       if (!this.createdAt) {
