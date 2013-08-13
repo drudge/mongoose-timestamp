@@ -1,7 +1,7 @@
 {
     "name": "mongoose-timestamp"
   , "description": "Mongoose plugin that adds createdAt and updatedAt auto-assigned date properties" 
-  , "version": "0.1.0"
+  , "version": "0.1.1"
   , "author": "Nicholas Penree <nick@penree.com>"
   , "keywords": ["mongodb", "mongoose", "plugin", "timestamps", "createdAt", "updatedAt"]
   , "repository": {
