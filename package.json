@@ -9,10 +9,11 @@
     , "url": "git://github.com/drudge/mongoose-timestamp"
     }
   , "dependencies": {
-      "mongoose": ">= 3.0"
+      "bson": "0.2.2"
     }
   , "devDependencies": {
-      "should": ">= 0.2.1"
+      "mongoose": ">= 3.0"
+    , "should": ">= 0.2.1"
     , "mocha": ">= 0.13.0"
     }
   , "scripts": {

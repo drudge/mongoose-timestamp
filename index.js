@@ -5,8 +5,7 @@
  * MIT Licensed
  */
 
-var mongoose = require('mongoose');
-var BinaryParser = require('mongoose/node_modules/mongodb/node_modules/bson').BinaryParser;
+var BinaryParser = require('bson').BinaryParser;
 
 function timestampsPlugin(schema, options) {
   if (schema.path('_id')) {
