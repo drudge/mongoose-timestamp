@@ -5,8 +5,6 @@
  * MIT Licensed
  */
 
-var BinaryParser = require('bson').BinaryParser;
-
 function timestampsPlugin(schema, options) {
   if (schema.path('_id')) {
     schema.add({
