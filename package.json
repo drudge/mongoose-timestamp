@@ -6,7 +6,7 @@
   , "keywords": ["mongodb", "mongoose", "plugin", "timestamps", "createdAt", "updatedAt"]
   , "repository": {
       "type": "git"
-    , "url": "git://github.com/drudge/mongoose-timestamp"
+    , "url": "git://github.com/tsabolov/mongoose-timestamp"
     }
   , "dependencies": {
       "bson": "0.2.2"
