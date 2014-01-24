@@ -6,33 +6,42 @@
  */
 
 function timestampsPlugin(schema, options) {
+  var updatedAt = 'updatedAt';
+  var createdAt = 'createdAt';
+  if (typeof options === 'object') {
+    if (typeof options.u_at === 'string') {
+      updatedAt = options.u_at;
+    }
+    if (typeof options.c_at === 'string') {
+      createdAt = options.c_at;
+    }
+  }
+
+  var dataObj = {};
+  dataObj[updatedAt] = Date;
   if (schema.path('_id')) {
-    schema.add({
-      updatedAt: Date
-    });
-    schema.virtual('createdAt')
+    schema.add(dataObj);
+    schema.virtual(createdAt)
       .get( function () {
-        if (this._createdAt) return this._createdAt;
-        return this._createdAt = this._id.getTimestamp();
+        if (this["_" + createdAt]) return this["_" + createdAt];
+        return this["_" + createdAt] = this._id.getTimestamp();
       });
     schema.pre('save', function (next) {
       if (this.isNew) {
-        this.updatedAt = this.createdAt;
+        this[updatedAt] = this[createdAt];
       } else {
-        this.updatedAt = new Date;
+        this[updatedAt] = new Date;
       }
       next();
     });
   } else {
-    schema.add({
-        createdAt: Date
-      , updatedAt: Date
-    });
+    dataObj[createdAt] = Date;
+    schema.add(dataObj);
     schema.pre('save', function (next) {
-      if (!this.createdAt) {
-        this.createdAt = this.updatedAt = new Date;
+      if (!this[createdAt]) {
+        this[createdAt] = this[updatedAt] = new Date;
       } else {
-        this.updatedAt = new Date;
+        this[updatedAt] = new Date;
       }
       next();
     });
