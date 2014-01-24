@@ -9,11 +9,11 @@ function timestampsPlugin(schema, options) {
   var updatedAt = 'updatedAt';
   var createdAt = 'createdAt';
   if (typeof options === 'object') {
-    if (typeof options.u_at === 'string') {
-      updatedAt = options.u_at;
+    if (typeof options.updated_at === 'string') {
+      updatedAt = options.updated_at;
     }
-    if (typeof options.c_at === 'string') {
-      createdAt = options.c_at;
+    if (typeof options.created_at === 'string') {
+      createdAt = options.created_at;
     }
   }
 
