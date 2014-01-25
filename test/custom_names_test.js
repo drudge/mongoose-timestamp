@@ -30,10 +30,10 @@ after(function(done) {
 })
 
 describe('timestamps custom names', function() {
-	it('should have updatedAt and createdAt field named as the customized names specified', function(done) {
+	it('should have updatedAt and createdAt customized named field equal', function(done) {
 		var customCop = new CustomizedNameTimeCop({email: 'example@example.com'});
 		customCop.save(function (err) {
-			customCop.should.have.keys('_customNameCreatedAt', '_customNameUpdatedAt');
+			customCop["customNameCreatedAt"].should.equal(customCop["customNameUpdatedAt"]);
 			done();
 		});
 	})
