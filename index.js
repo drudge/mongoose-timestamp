@@ -6,7 +6,7 @@
  */
 
 function timestampsPlugin(schema, options) {
-  if (schema.path('_id')) {
+  if (schema.path('createdAt')) {
     schema.add({
       updatedAt: Date
     });
