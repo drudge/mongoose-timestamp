@@ -6,33 +6,51 @@
  */
 
 function timestampsPlugin(schema, options) {
+  var updatedAt = 'updatedAt';
+  var createdAt = 'createdAt';
+  var updatedAtType = Date;
+  var createdAtType = Date;
+  
+  if (typeof options === 'object') {
+    if (typeof options.updatedAt === 'string') {
+      updatedAt = options.updatedAt;
+    } else if (typeof options.updatedAt === 'object') {
+      updatedAt = options.updatedAt.name || updatedAt;
+      updatedAtType = options.updatedAt.type || updatedAtType;
+    }
+    if (typeof options.createdAt === 'string') {
+      createdAt = options.createdAt;
+    } else if (typeof options.createdAt === 'object') {
+      createdAt = options.createdAt.name || createdAt;
+      createdAtType = options.createdAt.type || createdAtType;
+    }
+  }
+
+  var dataObj = {};
+  dataObj[updatedAt] = updatedAtType;
   if (schema.path('createdAt')) {
-    schema.add({
-      updatedAt: Date
-    });
-    schema.virtual('createdAt')
+    schema.add(dataObj);
+    schema.virtual(createdAt)
       .get( function () {
-        if (this._createdAt) return this._createdAt;
-        return this._createdAt = this._id.getTimestamp();
+        if (this["_" + createdAt]) return this["_" + createdAt];
+        return this["_" + createdAt] = this._id.getTimestamp();
       });
     schema.pre('save', function (next) {
       if (this.isNew) {
-        this.updatedAt = this.createdAt;
+        this[updatedAt] = this[createdAt];
       } else {
-        this.updatedAt = new Date;
+        this[updatedAt] = new Date;
       }
       next();
     });
   } else {
-    schema.add({
-        createdAt: Date
-      , updatedAt: Date
-    });
+    dataObj[createdAt] = createdAtType;
+    schema.add(dataObj);
     schema.pre('save', function (next) {
-      if (!this.createdAt) {
-        this.createdAt = this.updatedAt = new Date;
+      if (!this[createdAt]) {
+        this[createdAt] = this[updatedAt] = new Date;
       } else {
-        this.updatedAt = new Date;
+        this[updatedAt] = new Date;
       }
       next();
     });

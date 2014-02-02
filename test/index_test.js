@@ -15,10 +15,6 @@ mongoose.connection.on('error', function (err) {
   console.error('Make sure a mongoDB server is running and accessible by this application')
 });
 
-var TimeCopSchema = new Schema({
-  email: String
-});
-
 mongoose.plugin(timestamps);
 
 var TimeCopSchema = new Schema({
@@ -26,11 +22,6 @@ var TimeCopSchema = new Schema({
 });
 
 var TimeCop = mongoose.model('TimeCop', TimeCopSchema);
-
-after(function(done) {
-  mongoose.connection.db.dropDatabase()
-  done();
-})
 
 describe('timestamps', function() {
   it('should be set to the same value on creation', function(done) {
