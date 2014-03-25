@@ -28,7 +28,7 @@ function timestampsPlugin(schema, options) {
 
   var dataObj = {};
   dataObj[updatedAt] = updatedAtType;
-  if (schema.path('createdAt')) {
+  if (schema.path(createdAt)) {
     schema.add(dataObj);
     schema.virtual(createdAt)
       .get( function () {
