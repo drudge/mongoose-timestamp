@@ -37,6 +37,16 @@ user.save(function (err) {
   }, 1000);
 });
 ```
+
+You can specify custom property names by passing them in as options like this:
+
+```javascript
+mongoose.plugin(timestamps,  {
+  createdAt: 'created_at', 
+  updatedAt: 'updated_at'
+});
+```
+
 ## License 
 
 (The MIT License)
