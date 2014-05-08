@@ -17,11 +17,10 @@ mongoose.connection.on('error', function (err) {
 
 var opts = {createdAt: 'customNameCreatedAt', updatedAt: 'customNameUpdatedAt'};
 
-mongoose.plugin(timestamps, opts);
-
 var CustomizedNameOnlyTimeCopSchema = new Schema({
 	email: String
 });
+CustomizedNameOnlyTimeCopSchema.plugin(timestamps, opts);
 
 var CustomizedNameOnlyTimeCop = mongoose.model('CustomizedNameOnlyTimeCop', CustomizedNameOnlyTimeCopSchema);
 
