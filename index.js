@@ -39,6 +39,7 @@ function timestampsPlugin(schema, options) {
       if (this.isNew) {
         this[updatedAt] = this[createdAt];
       } else {
+        if (this.modifiedPaths().length === 0) return next();
         this[updatedAt] = new Date;
       }
       next();
@@ -47,6 +48,7 @@ function timestampsPlugin(schema, options) {
     dataObj[createdAt] = createdAtType;
     schema.add(dataObj);
     schema.pre('save', function (next) {
+      if (this.modifiedPaths().length === 0) return next();
       if (!this[createdAt]) {
         this[createdAt] = this[updatedAt] = new Date;
       } else {
