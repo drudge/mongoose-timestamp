@@ -16,9 +16,9 @@
     "url": "git://github.com/drudge/mongoose-timestamp"
   },
   "devDependencies": {
-    "mongoose": "^3.8.8",
-    "should": "^3.2.0-beta1",
-    "mocha": "^1.18.2"
+    "mongoose": "~3.8.8",
+    "should": "~3.2.0",
+    "mocha": "~1.18.2"
   },
   "scripts": {
     "test": "mocha -u bdd -R spec -c ./test/*test.js"

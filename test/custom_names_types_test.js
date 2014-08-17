@@ -26,12 +26,10 @@ var opts = {
 	}
 };
 
-mongoose.plugin(timestamps, opts);
-
 var CustomizedNameAndTypesTimeCopSchema = new Schema({
 	email: String
 });
-
+CustomizedNameAndTypesTimeCopSchema.plugin(timestamps, opts);
 var CustomizedNameAndTypesTimeCop = mongoose.model('CustomizedNameAndTypesTimeCop', CustomizedNameAndTypesTimeCopSchema);
 
 describe('timestamps custom names and types', function() {
