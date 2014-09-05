@@ -10,7 +10,8 @@ function timestampsPlugin(schema, options) {
   var createdAt = 'createdAt';
   var updatedAtType = Date;
   var createdAtType = Date;
-  
+  var expires = false;
+
   if (typeof options === 'object') {
     if (typeof options.updatedAt === 'string') {
       updatedAt = options.updatedAt;
@@ -24,6 +25,7 @@ function timestampsPlugin(schema, options) {
       createdAt = options.createdAt.name || createdAt;
       createdAtType = options.createdAt.type || createdAtType;
     }
+    if (options.expires) expires = options.expires;
   }
 
   var dataObj = {};
@@ -44,7 +46,9 @@ function timestampsPlugin(schema, options) {
       next();
     });
   } else {
-    dataObj[createdAt] = createdAtType;
+    dataObj[createdAt] = {};
+    dataObj[createdAt].type = createdAtType;
+    if (expires) dataObj[createdAt].expires = expires;
     schema.add(dataObj);
     schema.pre('save', function (next) {
       if (!this[createdAt]) {
