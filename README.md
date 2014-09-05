@@ -43,7 +43,8 @@ You can specify custom property names by passing them in as options like this:
 ```javascript
 mongoose.plugin(timestamps,  {
   createdAt: 'created_at', 
-  updatedAt: 'updated_at'
+  updatedAt: 'updated_at',
+  expires: '30d'
 });
 ```
 
