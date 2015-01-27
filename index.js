@@ -55,6 +55,13 @@ function timestampsPlugin(schema, options) {
       next();
     });
   }
+
+  if(!schema.methods.hasOwnProperty('touch'))
+    schema.methods.touch = function(callback){
+      this[updatedAt] = new Date;
+      this.save(callback)
+    }
+
 }
 
 module.exports = timestampsPlugin;
