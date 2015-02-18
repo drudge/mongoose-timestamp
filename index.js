@@ -27,7 +27,7 @@ function timestampsPlugin(schema, options) {
   }
 
   var dataObj = {};
-  dataObj[updatedAt] = updatedAtType;
+  dataObj[updatedAt] = { type: updatedAtType, select: true };
   if (schema.path(createdAt)) {
     schema.add(dataObj);
     schema.virtual(createdAt)
@@ -44,7 +44,7 @@ function timestampsPlugin(schema, options) {
       next();
     });
   } else {
-    dataObj[createdAt] = createdAtType;
+    dataObj[createdAt] = { type: createdAtType, select: true };
     schema.add(dataObj);
     schema.pre('save', function (next) {
       if (!this[createdAt]) {
