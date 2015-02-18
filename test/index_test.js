@@ -41,4 +41,19 @@ describe('timestamps', function() {
       }, 1000);
     });
   })
+
+  it('should not update createdAt upon updating with selection', function(done) {
+    TimeCop.findOne({email: 'jeanclaude@vandamme.com'}, function (err, found) {
+      var createdAt = found.createdAt;
+      TimeCop.findOne({email: 'jeanclaude@vandamme.com'}).select('email').exec(function (err, found) {
+        found.email = 'brian@brian.com';
+        setTimeout( function () {
+          found.save( function (err, updated) {
+            createdAt.should.eql(updated.createdAt);
+            done();
+          });
+        }, 1000);
+      });
+    });
+  })
 })
