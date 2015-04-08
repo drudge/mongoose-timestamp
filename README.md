@@ -37,8 +37,17 @@ user.save(function (err) {
   }, 1000);
 });
 ```
+### findOneAndModify (mongoose >= 4.0.1)
+Mongoose 4.0.1 add support for findOneAndModify hooks. You must the mongoose promise exec for the hooks to work as mongoose uses mquery when a callback is passed and the hook system is bypassed.
 
 You can specify custom property names by passing them in as options like this:
+```javascript
+User.findOneAndUpdate({username: 'Prince'}, { password: 'goatcheese' }, { new: true, upsert: true })
+            .exec(function (err, updated) {
+                console.log(user.updatedAt); // Should be approximately createdAt + 1 second
+                console.log(user.createdAt < user.updatedAt); // true
+            });
+```
 
 ```javascript
 mongoose.plugin(timestamps,  {
