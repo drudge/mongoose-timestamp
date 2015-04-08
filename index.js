@@ -55,6 +55,14 @@ function timestampsPlugin(schema, options) {
       next();
     });
   }
+  
+  	schema.pre('findOneAndUpdate', function (next) {
+	    // this is a special update do hickey
+	    var setOnInsert = this._update['$setOnInsert'];
+	    setOnInsert[createdAt] = new Date;
+	    this._update[updatedAt] = new Date;
+	    next();
+	});
 
   if(!schema.methods.hasOwnProperty('touch'))
     schema.methods.touch = function(callback){
