@@ -39,7 +39,7 @@ user.save(function (err) {
 ```
 #### findOneAndModify (mongoose >= 4.0.1)
 
-Mongoose 4.0.1 add support for findOneAndModify hooks. You must the mongoose promise exec for the hooks to work as mongoose uses mquery when a callback is passed and the hook system is bypassed.
+Mongoose 4.0.1 added support for findOneAndModify hooks. You must the mongoose promise exec for the hooks to work as mongoose uses mquery when a callback is passed and the hook system is bypassed.
 
 ```javascript
 User.findOneAndUpdate({username: 'Prince'}, { password: 'goatcheese' }, { new: true, upsert: true })
