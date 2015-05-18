@@ -67,6 +67,16 @@ function timestampsPlugin(schema, options) {
 	next();
     });
 
+    schema.pre('update', function(next) {
+	if (this.op === 'update') {
+	    this._update = this._update || {};
+	    this._update[updatedAt] = new Date;
+	    this._update['$setOnInsert'] = this._update['$setOnInsert'] || {};
+	    this._update['$setOnInsert'][createdAt] = new Date;
+	}
+	next();
+    });
+
     if(!schema.methods.hasOwnProperty('touch'))
 	schema.methods.touch = function(callback){
 	    this[updatedAt] = new Date;

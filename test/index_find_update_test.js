@@ -22,16 +22,12 @@ var TimeCopSchema = new Schema({
 TimeCopSchema.plugin(timestamps);
 var TimeCop = mongoose.model('TimeCop', TimeCopSchema);
 
-describe('update', function() {
+describe('findOneAndUpdate', function() {
     it('should have updatedAt greater than or equal to createdAt upon updating', function(done) {
-	TimeCop.update({email:  'stewie@familyguysmatter.com'}, { $set: { nemesis: 'dave' } }, { upsert: false })
+	TimeCop.findOneAndUpdate({email:  'stewie@familyguysmatter.com'}, { nemesis: 'lois' }, { new: true, upsert: true })
 	    .exec(function (err, updated) {
-		TimeCop.findOne({email:  'stewie@familyguysmatter.com'}, function(err, update) {
-
-		    update.updatedAt.should.not.be.below(updated.createdAt);
-		    
-		    done();
-		});
+		updated.updatedAt.should.not.be.below(updated.createdAt);
+		done();
 	    });
     })
 
