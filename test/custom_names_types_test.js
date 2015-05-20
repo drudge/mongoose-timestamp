@@ -9,10 +9,10 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var timestamps = require('../');
 
-mongoose.connect('mongodb://localhost/mongoose_timestamps')
-mongoose.connection.on('error', function (err) {
-	console.error('MongoDB error: ' + err.message);
-	console.error('Make sure a mongoDB server is running and accessible by this application')
+mongoose = mongoose.createConnection('mongodb://localhost/mongoose_timestamps')
+mongoose.on('error', function (err) {
+        console.error('MongoDB error: ' + err.message);
+        console.error('Make sure a mongoDB server is running and accessible by this application')
 });
 
 var opts = {
@@ -71,4 +71,7 @@ describe('timestamps custom names and types', function() {
 		});
 	});
 
+	after(function() {
+                mongoose.close();
+        });
 });
