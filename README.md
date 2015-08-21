@@ -45,6 +45,13 @@ mongoose.plugin(timestamps,  {
   createdAt: 'created_at', 
   updatedAt: 'updated_at'
 });
+
+You can also ignore some properties modifications by passing their paths (if no other property is modified, the updatedAt will not be updated):
+
+```javascript
+mongoose.plugin(timestamps,  {
+  ignorePaths: [ 'lastSeenAt' ]
+});
 ```
 
 Any model's updatedAt attribute can be updated to the current time using `touch()`.

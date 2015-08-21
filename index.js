@@ -5,11 +5,21 @@
  * MIT Licensed
  */
 
+function shouldIgnoreModifications(modifiedPaths, ignorePaths) {
+  for (var i in modifiedPaths) {
+    if (ignorePaths.indexOf(modifiedPaths[i]) === -1) {
+      return false;
+    }
+  }
+  return true;
+}
+
 function timestampsPlugin(schema, options) {
   var updatedAt = 'updatedAt';
   var createdAt = 'createdAt';
   var updatedAtType = Date;
   var createdAtType = Date;
+  var ignorePaths = [];
   
   if (typeof options === 'object') {
     if (typeof options.updatedAt === 'string') {
@@ -23,6 +33,9 @@ function timestampsPlugin(schema, options) {
     } else if (typeof options.createdAt === 'object') {
       createdAt = options.createdAt.name || createdAt;
       createdAtType = options.createdAt.type || createdAtType;
+    }
+    if (options.ignorePaths instanceof Array) {
+      ignorePaths = options.ignorePaths;
     }
   }
 
@@ -38,7 +51,7 @@ function timestampsPlugin(schema, options) {
     schema.pre('save', function (next) {
       if (this.isNew) {
         this[updatedAt] = this[createdAt];
-      } else if (this.isModified()) {
+      } else if (this.isModified() && !shouldIgnoreModifications(this.modifiedPaths(), ignorePaths)) {
         this[updatedAt] = new Date;
       }
       next();
@@ -49,7 +62,7 @@ function timestampsPlugin(schema, options) {
     schema.pre('save', function (next) {
       if (!this[createdAt]) {
         this[createdAt] = this[updatedAt] = new Date;
-      } else if (this.isModified()) {
+      } else if (this.isModified() && !shouldIgnoreModifications(this.modifiedPaths(), ignorePaths)) {
         this[updatedAt] = new Date;
       }
       next();
