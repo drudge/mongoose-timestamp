@@ -66,9 +66,10 @@ describe('timestamps custom names and types with options', function() {
 				done();
 			});
 		};
-
 		var customCop = new CustomizedTypeOptionsTimeCop({email: 'example@example.com'});
-		customCop.save(checkElastic);
+		customCop.save(function() {
+			customCop.on('es-indexed', checkElastic);
+		});
 	});
 
 	after(function() {
