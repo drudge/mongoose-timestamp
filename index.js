@@ -5,29 +5,39 @@
  * MIT Licensed
  */
 
+var defaults = require('defaults');
+
 function timestampsPlugin(schema, options) {
     var updatedAt = 'updatedAt';
     var createdAt = 'createdAt';
-    var updatedAtType = Date;
-    var createdAtType = Date;
-    
+    var updatedAtOpts = Date;
+    var createdAtOpts = Date;
+    var dataObj = {};
+
     if (typeof options === 'object') {
-	if (typeof options.updatedAt === 'string') {
-	    updatedAt = options.updatedAt;
-	} else if (typeof options.updatedAt === 'object') {
-	    updatedAt = options.updatedAt.name || updatedAt;
-	    updatedAtType = options.updatedAt.type || updatedAtType;
-	}
-	if (typeof options.createdAt === 'string') {
-	    createdAt = options.createdAt;
-	} else if (typeof options.createdAt === 'object') {
-	    createdAt = options.createdAt.name || createdAt;
-	    createdAtType = options.createdAt.type || createdAtType;
-	}
+        if (typeof options.updatedAt === 'string') {
+           updatedAt = options.updatedAt;
+        } else if (typeof options.updatedAt === 'object') {
+            updatedAtOpts = defaults(options.updatedAt, {
+                name: updatedAt,
+                type: Date
+            });
+            updatedAt = updatedAtOpts.name;
+        }
+
+        if (typeof options.createdAt === 'string') {
+            createdAt = options.createdAt;
+        } else if (typeof options.createdAt === 'object') {
+            createdAtOpts = defaults(options.createdAt, {
+                name: createdAt,
+                type: Date
+            });
+            createdAt = createdAtOpts.name;
+        }
     }
 
-    var dataObj = {};
-    dataObj[updatedAt] = updatedAtType;
+    dataObj[updatedAt] = updatedAtOpts;
+
     if (schema.path(createdAt)) {
 	schema.add(dataObj);
 	schema.virtual(createdAt)
@@ -43,9 +53,9 @@ function timestampsPlugin(schema, options) {
 	    }
 	    next();
 	});
-	
+
     } else {
-	dataObj[createdAt] = createdAtType;
+	dataObj[createdAt] = createdAtOpts;
 	schema.add(dataObj);
 	schema.pre('save', function (next) {
 	    if (!this[createdAt]) {
@@ -56,7 +66,7 @@ function timestampsPlugin(schema, options) {
 	    next();
 	});
     }
-    
+
     schema.pre('findOneAndUpdate', function (next) {
 	if (this.op === 'findOneAndUpdate') {
 	    this._update = this._update || {};

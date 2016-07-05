@@ -10,3 +10,4 @@ node_js:
   - "iojs"
 services:
   - mongodb
+  - elasticsearch
