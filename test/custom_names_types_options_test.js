@@ -52,8 +52,7 @@ describe('timestamps custom names and types with options', function() {
 	});
 
 	it('should create an elastic search index when passed es_indexed = true', function(done) {
-		var customCop = new CustomizedTypeOptionsTimeCop({email: 'example@example.com'});
-		customCop.save(function (err) {
+		var checkElastic = function() {
 			request({
 				url: 'http://127.0.0.1:9200/customizedtypeoptionstimecops',
 				json: true
@@ -66,6 +65,12 @@ describe('timestamps custom names and types with options', function() {
 				body.customizedtypeoptionstimecops.mappings.customizedtypeoptionstimecop.properties.should.have.a.property(opts.updatedAt.name);
 				done();
 			});
+		};
+
+		var customCop = new CustomizedTypeOptionsTimeCop({email: 'example@example.com'});
+		customCop.save(function (err) {
+			var customCop2 = new CustomizedTypeOptionsTimeCop({email: 'example2@example.com'});
+			customCop2.save(checkElastic);
 		});
 	});
 
