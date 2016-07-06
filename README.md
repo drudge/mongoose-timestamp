@@ -1,5 +1,11 @@
-Mongoose Timestamps Plugin [![Build Status](https://secure.travis-ci.org/drudge/mongoose-timestamp.png?branch=master)](https://travis-ci.org/drudge/mongoose-timestamp)
+Mongoose Timestamps Plugin
 ==========================
+
+[![Build Status](https://travis-ci.org/drudge/mongoose-timestamp.svg?branch=master)](https://travis-ci.org/drudge/mongoose-timestamp)
+[![Dependency Status](https://david-dm.org/drudge/mongoose-timestamp.svg)](https://david-dm.org/drudge/mongoose-timestamp)
+[![devDependency Status](https://david-dm.org/drudge/mongoose-timestamp/dev-status.svg)](https://david-dm.org/drudge/mongoose-timestamp#info=devDependencies)
+[![Downloads Monthly](https://img.shields.io/npm/dm/mongoose-timestamp.svg)](https://www.npmjs.com/package/mongoose-timestamp)
+[![Downloads Total](https://img.shields.io/npm/dt/mongoose-timestamp.svg)](https://www.npmjs.com/package/mongoose-timestamp)
 
 Simple plugin for [Mongoose](https://github.com/LearnBoost/mongoose) which adds `createdAt` and `updatedAt` date attributes
 that get auto-assigned to the most recent create/update timestamp.
