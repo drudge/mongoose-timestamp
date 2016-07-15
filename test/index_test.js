@@ -43,6 +43,17 @@ describe('timestamps', function() {
     });
   })
 
+  it('should not set a new createdAt if the field is not selected', function(done) {
+    TimeCop.findOne({email: 'jeanclaude@vandamme.com'}, {createdAt: false}, function (err, found) {
+      found.email = 'chuck@norris.com';
+      should(found.createdAt).equal(undefined);
+      found.save( function (err, updated) {
+        should(updated.createdAt).equal(undefined);
+        done();
+      });
+    });
+  })
+
   after(function() {
       mongoose.close();
   });
