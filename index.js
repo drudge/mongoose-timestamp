@@ -47,7 +47,7 @@ function timestampsPlugin(schema, options) {
     dataObj[createdAt] = createdAtType;
     schema.add(dataObj);
     schema.pre('save', function (next) {
-      if (!this[createdAt]) {
+      if (this.isSelected(createdAt) && !this[createdAt]) {
         this[createdAt] = this[updatedAt] = new Date;
       } else if (this.isModified()) {
         this[updatedAt] = new Date;
