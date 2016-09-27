@@ -53,8 +53,9 @@ function timestampsPlugin(schema, options) {
         }
         schema.pre('save', function(next) {
             if (this.isNew) {
-                if (createdAt) this[createdAt] = new Date;
-                if (updatedAt) this[updatedAt] = new Date;
+                var newDate = new Date;
+                if (createdAt) this[createdAt] = newDate;
+                if (updatedAt) this[updatedAt] = newDate;
             } else if (this.isModified() && updatedAt) {
                 this[updatedAt] = new Date;
             }
@@ -70,8 +71,9 @@ function timestampsPlugin(schema, options) {
         }
         schema.pre('save', function(next) {
             if (!this[createdAt]) {
-                if (createdAt) this[createdAt] = new Date;
-                if (updatedAt) this[updatedAt] = new Date;
+                var newDate = new Date;
+                if (createdAt) this[createdAt] = newDate;
+                if (updatedAt) this[updatedAt] = newDate;
             } else if (this.isModified() && updatedAt) {
                 this[updatedAt] = new Date;
             }
@@ -81,6 +83,7 @@ function timestampsPlugin(schema, options) {
 
     schema.pre('findOneAndUpdate', function(next) {
     if (this.op === 'findOneAndUpdate') {
+        var newDate = new Date;
         this._update = this._update || {};
         if (createdAt) {
             if (this._update[createdAt]) {
@@ -88,10 +91,10 @@ function timestampsPlugin(schema, options) {
             }
 
             this._update['$setOnInsert'] = this._update['$setOnInsert'] || {};
-            this._update['$setOnInsert'][createdAt] = new Date;
+            this._update['$setOnInsert'][createdAt] = newDate;
         }
         if (updatedAt) {
-            this._update[updatedAt] = new Date;
+            this._update[updatedAt] = newDate;
         }
     }
     next();
@@ -99,6 +102,7 @@ function timestampsPlugin(schema, options) {
 
     schema.pre('update', function(next) {
     if (this.op === 'update') {
+        var newDate = new Date;
         this._update = this._update || {};
         if (createdAt) {
             if (this._update[createdAt]) {
@@ -106,10 +110,10 @@ function timestampsPlugin(schema, options) {
             }
 
             this._update['$setOnInsert'] = this._update['$setOnInsert'] || {};
-            this._update['$setOnInsert'][createdAt] = new Date;
+            this._update['$setOnInsert'][createdAt] = newDate;
         }
         if (updatedAt) {
-            this._update[updatedAt] = new Date;
+            this._update[updatedAt] = newDate;
         }
     }
     next();
