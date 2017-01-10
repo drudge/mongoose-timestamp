@@ -1,7 +1,13 @@
-Mongoose Timestamps Plugin [![Build Status](https://secure.travis-ci.org/drudge/mongoose-timestamp.png?branch=master)](https://travis-ci.org/drudge/mongoose-timestamp)
+Mongoose Timestamps Plugin
 ==========================
 
-Simple plugin for [Mongoose](https://github.com/LearnBoost/mongoose) which adds `createdAt` and `updatedAt` date attributes 
+[![Build Status](https://travis-ci.org/drudge/mongoose-timestamp.svg?branch=master)](https://travis-ci.org/drudge/mongoose-timestamp)
+[![Dependency Status](https://david-dm.org/drudge/mongoose-timestamp.svg)](https://david-dm.org/drudge/mongoose-timestamp)
+[![devDependency Status](https://david-dm.org/drudge/mongoose-timestamp/dev-status.svg)](https://david-dm.org/drudge/mongoose-timestamp#info=devDependencies)
+[![Downloads Monthly](https://img.shields.io/npm/dm/mongoose-timestamp.svg)](https://www.npmjs.com/package/mongoose-timestamp)
+[![Downloads Total](https://img.shields.io/npm/dt/mongoose-timestamp.svg)](https://www.npmjs.com/package/mongoose-timestamp)
+
+Simple plugin for [Mongoose](https://github.com/LearnBoost/mongoose) which adds `createdAt` and `updatedAt` date attributes
 that get auto-assigned to the most recent create/update timestamp.
 
 ## Installation
@@ -19,7 +25,7 @@ UserSchema.plugin(timestamps);
 mongoose.model('User', UserSchema);
 var User = mongoose.model('User', UserSchema)
 ```
-The User model will now have `createdAt` and `updatedAt` properties, which get 
+The User model will now have `createdAt` and `updatedAt` properties, which get
 automatically generated and updated when you save your document.
 
 ```javascript
@@ -37,23 +43,34 @@ user.save(function (err) {
   }, 1000);
 });
 ```
+#### findOneAndModify (mongoose >= 4.0.1)
+
+Mongoose 4.0.1 added support for findOneAndModify hooks. You must the mongoose promise exec for the hooks to work as mongoose uses mquery when a callback is passed and the hook system is bypassed.
+
+```javascript
+User.findOneAndUpdate({username: 'Prince'}, { password: 'goatcheese' }, { new: true, upsert: true })
+            .exec(function (err, updated) {
+                console.log(user.updatedAt); // Should be approximately createdAt + 1 second
+                console.log(user.createdAt < user.updatedAt); // true
+            });
+```
 
 You can specify custom property names by passing them in as options like this:
 
 ```javascript
 mongoose.plugin(timestamps,  {
-  createdAt: 'created_at', 
+  createdAt: 'created_at',
   updatedAt: 'updated_at'
 });
 ```
 
 Any model's updatedAt attribute can be updated to the current time using `touch()`.
 
-## License 
+## License
 
 (The MIT License)
 
-Copyright (c) 2012 Nicholas Penree &lt;nick@penree.com&gt;
+Copyright (c) 2012-2016 Nicholas Penree &lt;nick@penree.com&gt;
 
 Based on [mongoose-types](https://github.com/bnoguchi/mongoose-types): Copyright (c) 2012 [Brian Noguchi](https://github.com/bnoguchi)
 

@@ -9,10 +9,12 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var timestamps = require('../');
 
-mongoose.connect('mongodb://localhost/mongoose_timestamps');
-mongoose.connection.on('error', function (err) {
-  console.error('MongoDB error: ' + err.message);
-  console.error('Make sure a mongoDB server is running and accessible by this application')
+mongoose.Promise = global.Promise || mongoose.Promise;
+
+mongoose = mongoose.createConnection('mongodb://localhost/mongoose_timestamps')
+mongoose.on('error', function (err) {
+        console.error('MongoDB error: ' + err.message);
+        console.error('Make sure a mongoDB server is running and accessible by this application')
 });
 
 var SubDocumentSchema = new Schema({
@@ -43,7 +45,7 @@ describe('sub document timestamps', function() {
       done();
     });
   });
-  
+
   it('should not have updatedAt change if parent was updated but not sub document', function(done) {
     TimeCopWithSubDocs.findOne({email: 'brian@brian.com'}, function (err, found) {
       found.email = 'jeanclaude@vandamme.com';
@@ -74,4 +76,8 @@ describe('sub document timestamps', function() {
       }, 1000);
     });
   });
+
+    after(function() {
+        mongoose.close();
+    });
 });
