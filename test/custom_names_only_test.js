@@ -33,7 +33,7 @@ describe('timestamps custom names only', function() {
 			done();
 		});
 	});
-	
+
 	it('should have the createdAt field named "' + opts.createdAt + '" with type "Date"', function(done) {
 		var customCop = new CustomizedNameOnlyTimeCop({email: 'example@example.com'});
 		customCop.save(function (err) {
@@ -42,15 +42,15 @@ describe('timestamps custom names only', function() {
 			done();
 		});
 	});
-	
+
 	it('should be set to the same value on creation', function(done) {
 		var cop = new CustomizedNameOnlyTimeCop({ email: 'brian@brian.com' });
 		cop.save( function (err) {
-			cop[opts.createdAt].should.equal(cop[opts.updatedAt]);
+			cop[opts.createdAt].should.eql(cop[opts.updatedAt]);
 			done();
 		});
 	});
-	
+
 	it('should have updatedAt greater than createdAt upon updating', function(done) {
 		CustomizedNameOnlyTimeCop.findOne({email: 'brian@brian.com'}, function (err, found) {
 			found.email = 'jeanclaude@vandamme.com';
@@ -62,7 +62,7 @@ describe('timestamps custom names only', function() {
 			}, 1000);
 		});
 	});
-	
+
 	after(function() {
                 mongoose.close();
         });
