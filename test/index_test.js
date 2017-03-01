@@ -26,11 +26,11 @@ describe('timestamps', function() {
   it('should be set to the same value on creation', function(done) {
     var cop = new TimeCop({ email: 'brian@brian.com' });
     cop.save( function (err) {
-      cop.createdAt.should.equal(cop.updatedAt);
+      cop.createdAt.should.eql(cop.updatedAt);
       done();
     });
   })
-  
+
   it('should have updatedAt greater than createdAt upon updating', function(done) {
     TimeCop.findOne({email: 'brian@brian.com'}, function (err, found) {
       found.email = 'jeanclaude@vandamme.com';
