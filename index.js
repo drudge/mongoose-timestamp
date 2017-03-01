@@ -52,12 +52,12 @@ function timestampsPlugin(schema, options) {
               });
         }
         schema.pre('save', function(next) {
+            var newDate = Date.now()
             if (this.isNew) {
-                var newDate = new Date;
                 if (createdAt) this[createdAt] = newDate;
                 if (updatedAt) this[updatedAt] = newDate;
             } else if (this.isModified() && updatedAt) {
-                this[updatedAt] = new Date;
+                this[updatedAt] = newDate;
             }
             next();
         });
@@ -70,12 +70,12 @@ function timestampsPlugin(schema, options) {
             schema.add(dataObj);
         }
         schema.pre('save', function(next) {
+            var newDate = Date.now()
             if (!this[createdAt]) {
-                var newDate = new Date;
                 if (createdAt) this[createdAt] = newDate;
                 if (updatedAt) this[updatedAt] = newDate;
             } else if (this.isModified() && updatedAt) {
-                this[updatedAt] = new Date;
+                this[updatedAt] = newDate;
             }
             next();
         });
@@ -83,7 +83,7 @@ function timestampsPlugin(schema, options) {
 
     schema.pre('findOneAndUpdate', function(next) {
     if (this.op === 'findOneAndUpdate') {
-        var newDate = new Date;
+        var newDate = Date.now();
         this._update = this._update || {};
         if (createdAt) {
             if (this._update[createdAt]) {
@@ -102,7 +102,7 @@ function timestampsPlugin(schema, options) {
 
     schema.pre('update', function(next) {
     if (this.op === 'update') {
-        var newDate = new Date;
+        var newDate = Date.now();
         this._update = this._update || {};
         if (createdAt) {
             if (this._update[createdAt]) {
@@ -121,7 +121,7 @@ function timestampsPlugin(schema, options) {
 
     if(!schema.methods.hasOwnProperty('touch') && updatedAt)
     schema.methods.touch = function(callback){
-        this[updatedAt] = new Date;
+        this[updatedAt] = Date.now();
         this.save(callback);
     }
 
