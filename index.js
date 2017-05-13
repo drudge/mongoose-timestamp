@@ -40,45 +40,44 @@ function timestampsPlugin(schema, options) {
         dataObj[updatedAt] = updatedAtOpts;
     }
 
+    function setupCreatedVirtual(){
+      schema.virtual(createdAt)
+          .get( function () {
+              if (this["_" + createdAt]) return this["_" + createdAt];
+              return this["_" + createdAt] = this._id.getTimestamp();
+          });
+    }
+
+    function setupPreSave(condition,createdAt){
+        schema.pre('save', function(next) {
+            if (condition(this)) {
+                var newDate = new Date;
+                if (createdAt) this[createdAt] = newDate;
+                if (updatedAt) this[updatedAt] = newDate;
+            } else if (this.isModified() && updatedAt) {
+                this[updatedAt] = new Date;
+            }
+            next();
+        });
+    }
+
     if (schema.path(createdAt)) {
         if (!schema.path(updatedAt) && updatedAt) {
             schema.add(dataObj);
         }
+
         if (schema.virtual(createdAt).get) {
-          schema.virtual(createdAt)
-              .get( function () {
-                  if (this["_" + createdAt]) return this["_" + createdAt];
-                  return this["_" + createdAt] = this._id.getTimestamp();
-              });
+          setupCreatedVirtual();
         }
-        schema.pre('save', function(next) {
-            if (this.isNew) {
-                var newDate = new Date;
-                if (createdAt) this[createdAt] = newDate;
-                if (updatedAt) this[updatedAt] = newDate;
-            } else if (this.isModified() && updatedAt) {
-                this[updatedAt] = new Date;
-            }
-            next();
-        });
+
+        setupPreSave(function(that){return that.isNew; },createdAt); //Also update createdAt
 
     } else {
-        if (createdAt) {
-            dataObj[createdAt] = createdAtOpts;
-        }
-        if (dataObj[createdAt] || dataObj[updatedAt]) {
+        if (dataObj[updatedAt]) {
             schema.add(dataObj);
         }
-        schema.pre('save', function(next) {
-            if (!this[createdAt]) {
-                var newDate = new Date;
-                if (createdAt) this[createdAt] = newDate;
-                if (updatedAt) this[updatedAt] = newDate;
-            } else if (this.isModified() && updatedAt) {
-                this[updatedAt] = new Date;
-            }
-            next();
-        });
+        setupPreSave(function(that){return !that[createdAt]; }); //do not create createdAt in db, so undefined in second parameter
+        setupCreatedVirtual();
     }
 
     schema.pre('findOneAndUpdate', function(next) {
