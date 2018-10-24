@@ -95,13 +95,13 @@ function timestampsPlugin(schema, options) {
                 if (this._update["$set"] && this._update["$set"][createdAt]) {
                     delete this._update["$set"][createdAt];
                 }
-                
+
                 this._update['$setOnInsert'][createdAt] = newDate;
             }
-            
+
             if (this._update.hasOwnProperty("__v")) {
                 this._update['$setOnInsert'].__v = this._update.__v || 0;
-                delete this.update.__v;
+                delete this._update.__v;
             }
 
             if (this._update["$set"] && this._update["$set"].hasOwnProperty("__v")) {
@@ -113,7 +113,6 @@ function timestampsPlugin(schema, options) {
                 this._update[updatedAt] = newDate;
             }
 
-            console.log(this._update);
         }
         next();
     });
@@ -133,13 +132,13 @@ function timestampsPlugin(schema, options) {
                 if (this._update["$set"] && this._update["$set"][createdAt]) {
                     delete this._update["$set"][createdAt];
                 }
-                
+
                 this._update['$setOnInsert'][createdAt] = newDate;
             }
-            
+
             if (this._update.hasOwnProperty("__v")) {
                 this._update['$setOnInsert'].__v = this._update.__v || 0;
-                delete this.update.__v;
+                delete this._update.__v;
             }
 
             if (this._update["$set"] && this._update["$set"].hasOwnProperty("__v")) {
